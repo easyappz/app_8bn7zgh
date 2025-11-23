@@ -1,0 +1,11 @@
+type: object
+properties:
+  detail:
+    type: string
+    example: "Произошла ошибка. Попробуйте позже."
+    description: "Общее текстовое описание ошибки."
+  field_errors:
+    type: object
+    additionalProperties:
+      type: string
+    description: "Ошибки валидации по отдельным полям (если есть). Ключ — имя поля, значение — текст ошибки."

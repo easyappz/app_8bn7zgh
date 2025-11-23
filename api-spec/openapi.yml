@@ -1,0 +1,54 @@
+openapi: 3.1.0
+info:
+  title: "Групповой чат API"
+  version: "1.0.0"
+  description: "API для регистрации, авторизации, профиля пользователя и группового чата."
+servers:
+  - url: "/"
+    description: "Текущий сервер (тот же хост, что и frontend)."
+paths:
+  /api/auth/register:
+    $ref: "./paths/auth.yml#/register"
+  /api/auth/login:
+    $ref: "./paths/auth.yml#/login"
+  /api/auth/logout:
+    $ref: "./paths/auth.yml#/logout"
+  /api/profile:
+    $ref: "./paths/profile.yml"
+  /api/chat/messages:
+    $ref: "./paths/chat.yml"
+components:
+  securitySchemes:
+    TokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: "Token"
+      description: >-
+        Используется заголовок Authorization со значением вида "Token {token}".
+  schemas:
+    Member:
+      $ref: "./schemas/member.yml"
+    AuthToken:
+      $ref: "./schemas/auth_token.yml"
+    ChatMessage:
+      $ref: "./schemas/chat_message.yml"
+    ErrorResponse:
+      $ref: "./schemas/error_response.yml"
+  parameters:
+    limit:
+      name: limit
+      in: query
+      required: false
+      description: "Максимальное количество объектов в ответе."
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    offset:
+      name: offset
+      in: query
+      required: false
+      description: "Количество объектов, которое нужно пропустить от начала списка."
+      schema:
+        type: integer
+        minimum: 0

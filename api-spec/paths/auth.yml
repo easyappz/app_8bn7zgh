@@ -1,0 +1,99 @@
+register:
+  post:
+    summary: "Регистрация нового пользователя."
+    description: "Создание нового пользователя по имени пользователя и паролю."
+    tags:
+      - "Аутентификация"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - username
+              - password
+            properties:
+              username:
+                type: string
+                example: "user123"
+                description: "Имя пользователя (логин), которое будет использоваться для входа."
+              password:
+                type: string
+                minLength: 6
+                example: "secret123"
+                description: "Пароль пользователя. Минимальная длина — 6 символов."
+    responses:
+      "201":
+        description: "Пользователь успешно зарегистрирован. Возвращается токен и данные пользователя."
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/auth_token.yml"
+      "400":
+        description: "Ошибка валидации входных данных."
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/error_response.yml"
+login:
+  post:
+    summary: "Авторизация пользователя по логину и паролю."
+    description: "Возвращает токен доступа при успешной авторизации."
+    tags:
+      - "Аутентификация"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - username
+              - password
+            properties:
+              username:
+                type: string
+                example: "user123"
+                description: "Имя пользователя (логин)."
+              password:
+                type: string
+                minLength: 6
+                example: "secret123"
+                description: "Пароль пользователя."
+    responses:
+      "200":
+        description: "Успешная авторизация. Возвращается токен и данные пользователя."
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/auth_token.yml"
+      "400":
+        description: "Неверные данные запроса или ошибки валидации."
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/error_response.yml"
+      "401":
+        description: "Неверное имя пользователя или пароль."
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/error_response.yml"
+logout:
+  post:
+    summary: "Выход текущего пользователя."
+    description: "Инвалидация текущего токена доступа."
+    tags:
+      - "Аутентификация"
+    security:
+      - TokenAuth: []
+    responses:
+      "204":
+        description: "Выход выполнен успешно. Тело ответа отсутствует."
+      "401":
+        description: "Пользователь не авторизован или токен недействителен."
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/error_response.yml"

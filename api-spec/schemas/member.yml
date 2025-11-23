@@ -1,0 +1,24 @@
+type: object
+required:
+  - id
+  - username
+properties:
+  id:
+    type: integer
+    readOnly: true
+    example: 1
+    description: "Уникальный идентификатор пользователя."
+  username:
+    type: string
+    example: "user123"
+    description: "Имя пользователя (логин)."
+  password:
+    type: string
+    writeOnly: true
+    minLength: 6
+    description: "Пароль пользователя. Никогда не возвращается в ответах API."
+  created_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: "Дата и время создания пользователя."

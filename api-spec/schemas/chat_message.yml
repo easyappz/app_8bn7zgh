@@ -1,0 +1,36 @@
+type: object
+required:
+  - id
+  - author
+  - text
+  - created_at
+properties:
+  id:
+    type: integer
+    readOnly: true
+    description: "Уникальный идентификатор сообщения."
+  author:
+    type: object
+    description: "Краткая информация об авторе сообщения."
+    required:
+      - id
+      - username
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: "Идентификатор автора сообщения."
+      username:
+        type: string
+        example: "user123"
+        description: "Имя пользователя автора сообщения."
+  text:
+    type: string
+    maxLength: 1000
+    example: "Привет всем!"
+    description: "Текст сообщения в групповом чате."
+  created_at:
+    type: string
+    format: date-time
+    readOnly: true
+    description: "Дата и время создания сообщения."

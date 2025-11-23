@@ -1,0 +1,61 @@
+get:
+  summary: "Получение профиля текущего пользователя."
+  description: "Возвращает информацию о текущем аутентифицированном пользователе."
+  tags:
+    - "Профиль"
+  security:
+    - TokenAuth: []
+  responses:
+    "200":
+      description: "Профиль текущего пользователя."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/member.yml"
+    "401":
+      description: "Пользователь не авторизован."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_response.yml"
+put:
+  summary: "Обновление профиля текущего пользователя."
+  description: "Позволяет изменить имя пользователя и/или пароль. В запросе должно быть указано хотя бы одно из полей: username или password."
+  tags:
+    - "Профиль"
+  security:
+    - TokenAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          description: "Должно быть указано хотя бы одно поле: username или password."
+          properties:
+            username:
+              type: string
+              description: "Новое имя пользователя."
+            password:
+              type: string
+              minLength: 6
+              description: "Новый пароль пользователя (минимум 6 символов)."
+  responses:
+    "200":
+      description: "Профиль успешно обновлён."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/member.yml"
+    "400":
+      description: "Ошибка валидации данных или отсутствие полей для обновления."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_response.yml"
+    "401":
+      description: "Пользователь не авторизован."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_response.yml"

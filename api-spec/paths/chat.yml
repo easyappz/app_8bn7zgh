@@ -1,0 +1,65 @@
+get:
+  summary: "Список сообщений группового чата."
+  description: "Возвращает список сообщений в общем групповом чате."
+  tags:
+    - "Чат"
+  security:
+    - TokenAuth: []
+  parameters:
+    - $ref: "../openapi.yml#/components/parameters/limit"
+    - $ref: "../openapi.yml#/components/parameters/offset"
+  responses:
+    "200":
+      description: "Список сообщений успешно получен."
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/chat_message.yml"
+    "401":
+      description: "Пользователь не авторизован."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_response.yml"
+post:
+  summary: "Отправка нового сообщения в групповой чат."
+  description: "Создаёт новое сообщение в общем чате от имени текущего пользователя."
+  tags:
+    - "Чат"
+  security:
+    - TokenAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - text
+          properties:
+            text:
+              type: string
+              maxLength: 1000
+              example: "Всем привет!"
+              description: "Текст нового сообщения."
+  responses:
+    "201":
+      description: "Сообщение успешно создано."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/chat_message.yml"
+    "400":
+      description: "Ошибка валидации данных."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_response.yml"
+    "401":
+      description: "Пользователь не авторизован."
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_response.yml"
